@@ -1,0 +1,167 @@
+﻿@using Microsoft.AspNetCore.Html
+
+@{
+	Layout = null;
+	ViewData["Title"] = "Home Page";
+
+
+	//1. Dichiarare una variabile valorizzandola con il nostro nome.
+	//Dichiarare un'altra variabile valorizzandola con il nostro cognome.
+	//Stampare il nostro nome e cognome all'interno di un tag h2.
+	string firstname = "Marco";
+	string lastname = "de Iulio";
+
+
+	//3. Contare quante volte la lettera a  presente nalla frase "nel mezzo del cammin di nostra vita" e stampare questo valore in pagina
+	Func<dynamic, IHtmlContent> SentenceCount(string frase)
+	{
+		int count = 0;
+		frase.Split(' ');
+		foreach (char c in frase)
+		{
+			if (c == 'a')
+			{
+				count++;
+			}
+		}
+		return @<span>@count</span>
+	;
+	}
+
+	//4. Creare una List<int> di 20 numeri interi (generati random da 1 a 90, 1 e 90 inclusi) e mostrare in pagina solo i numeri compresi tra 20 e 70
+	List<int> NumListSum()
+	{
+		List<int> lNum = new List<int>();
+		Random rand = new Random();
+		for (var i = 0; i <= 90; i++)
+		{
+			int num = rand.Next(0, 90);
+			lNum.Add(num);
+		}
+		List<int> lNumMaggiori = new List<int>();
+		foreach (int n in lNum)
+		{
+			if (n >= 20 && n <= 70)
+			{
+				lNumMaggiori.Add(n);
+			}
+		}
+		return lNumMaggiori;
+
+	}
+
+}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"]</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+	<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+</head>
+<body>
+	<header>
+		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div class="container-fluid">
+				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">La mia pizzeria</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav flex-grow-1">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+				<h1 class="mb-5 text-center">La pizzeria di @firstname @lastname</h1>
+				<h4>Snacks</h4>
+				<span><h4>La somma dei numeri fino a 10 è: @Model</h4></span>
+				<div><h4>La frase contiene @SentenceCount("nel mezzo del cammin di nostra vita mi ritrovai per una valle oscura")(null) "a" al suo interno.</h4></div>
+				<div>
+					<h4>Numeri generati tra 20 e 70: </h4>
+				@{
+					foreach (var item in NumListSum())
+					{
+						<span>@item</span>
+					}
+				}
+				</div>
+	@*5. Stampare in pagina la data e l'ora attuale (usando la classe DateTime) con il formato anno-mese-giorno ore:minuti:secondi*@
+
+				<div>
+					<h4>
+					@DateTime.Now.ToShortDateString() @DateTime.Now.ToShortTimeString()
+					</h4>
+				</div>
+				<h2 class="my-4">Le pizze</h2>
+				<table class="table">
+					<thead>
+						<tr>
+							<th scope="col">Nome</th>
+							<th scope="col">Descrizione</th>
+							<th scope="col">Prezzo</th>
+							<th scope="col">Foto</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><h4>Margherita</h4></td>
+							<td>Ingredienti: Mozzarella, pomodoro, basilico</td>
+							<td>8,99$</td>
+							<td><img class="img-fluid" src="~/img/margherita.jpg"></img></td>
+						</tr>
+						<tr>
+							<td><h4>Quattro formaggi</h4></td>
+							<td>Ingredienti: Mozzarella,Gorgonzola,taleggio,fontina</td>
+							<td>10,99$</td>
+							<td><img class="img-fluid" src="~/img/formaggi.webp"></img></td>
+						</tr>
+						<tr>
+							<td><h4>Funghi</h4></td>
+							<td>Ingredienti: Mozzarella, pomodoro, basilico, funghi</td>
+							<td>9,99$</td>
+							<td><img class="img-fluid" src="~/img/funghi.jpg"></img></td>
+						</tr>
+						<tr>
+							<td><h4>Boscaiola</h4></td>
+							<td>Ingredienti: Mozzarella, pomodoro, salsiccia, funghi</td>
+							<td>11,99$</td>
+							<td><img class="img-fluid" src="~/img/boscaiola.jpg"></img></td>
+						</tr>
+						<tr>
+							<td><h4>Salame</h4></th>
+							<td>Ingredienti: Mozzarella, pomodoro, salame piccante</td>
+							<td>7,99$</td>
+							<td><img class="img-fluid" src="~/img/salame.jpg"></img></td>
+						</tr>
+						<tr>
+							<td><h4>Bufala</h4></td>
+							<td>Ingredienti: Mozzarella di bufala, pomodoro, basilico</td>
+							<td>8,99$</td>
+							<td><img class="img-fluid" src="~/img/bufala.jpg"></img></td>
+						</tr>
+					</tbody>
+				</table>
+		</main>
+	</div>
+
+
+
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+
