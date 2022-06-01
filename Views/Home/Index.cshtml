@@ -11,6 +11,21 @@
 	string firstname = "Marco";
 	string lastname = "de Iulio";
 
+	@functions{
+
+		
+	//2. Creare una funzione che stampa la somma dei numeri che vanno da 1 a n (con n passato come parametro - n incluso)
+	//Stampare dentro uno span il risultato.
+	public IHtmlContent NumbersSum(int iNumb)
+    {
+        int iSum = 0;
+        for(int i = 1; i <= iNumb; i++)
+            iSum += i;
+        return Html.Raw($@"
+            <span>{iSum}</span>
+        ");
+    }
+
 
 	//3. Contare quante volte la lettera a  presente nalla frase "nel mezzo del cammin di nostra vita" e stampare questo valore in pagina
 	Func<dynamic, IHtmlContent> SentenceCount(string frase)
@@ -26,6 +41,7 @@
 		}
 		return @<span>@count</span>
 	;
+	}
 	}
 
 	//4. Creare una List<int> di 20 numeri interi (generati random da 1 a 90, 1 e 90 inclusi) e mostrare in pagina solo i numeri compresi tra 20 e 70
@@ -88,8 +104,8 @@
 		<main role="main" class="pb-3">
 				<h1 class="mb-5 text-center">La pizzeria di @firstname @lastname</h1>
 				<h4>Snacks</h4>
-				<span><h4>La somma dei numeri fino a 10 è: @Model</h4></span>
-				<div><h4>La frase contiene @SentenceCount("nel mezzo del cammin di nostra vita mi ritrovai per una valle oscura")(null) "a" al suo interno.</h4></div>
+				<h4>La somma dei numeri fino a 50 è: @NumbersSum(50)</h4>
+				<h4>La frase contiene @SentenceCount("nel mezzo del cammin di nostra vita mi ritrovai per una valle oscura")(null) "a" al suo interno.</h4>
 				<div>
 					<h4>Numeri generati tra 20 e 70: </h4>
 				@{
