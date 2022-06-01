@@ -14,34 +14,59 @@
 	@functions{
 
 		
-	//2. Creare una funzione che stampa la somma dei numeri che vanno da 1 a n (con n passato come parametro - n incluso)
-	//Stampare dentro uno span il risultato.
-	public IHtmlContent NumbersSum(int iNumb)
-    {
-        int iSum = 0;
-        for(int i = 1; i <= iNumb; i++)
-            iSum += i;
-        return Html.Raw($@"
-            <span>{iSum}</span>
-        ");
-    }
-
-
-	//3. Contare quante volte la lettera a  presente nalla frase "nel mezzo del cammin di nostra vita" e stampare questo valore in pagina
-	Func<dynamic, IHtmlContent> SentenceCount(string frase)
-	{
-		int count = 0;
-		frase.Split(' ');
-		foreach (char c in frase)
+		//2. Creare una funzione che stampa la somma dei numeri che vanno da 1 a n (con n passato come parametro - n incluso)
+		//Stampare dentro uno span il risultato.
+		public IHtmlContent NumbersSum(int iNumb)
 		{
-			if (c == 'a')
-			{
-				count++;
-			}
+			int iSum = 0;
+			for(int i = 1; i <= iNumb; i++)
+				iSum += i;
+			return Html.Raw($@"
+				<span>{iSum}</span>
+			");
 		}
-		return @<span>@count</span>
-	;
-	}
+
+
+		//3. Contare quante volte la lettera a  presente nalla frase "nel mezzo del cammin di nostra vita" e stampare questo valore in pagina
+		Func<dynamic, IHtmlContent> SentenceCount(string frase)
+		{
+			int count = 0;
+			frase.Split(' ');
+			foreach (char c in frase)
+			{
+				if (c == 'a')
+				{
+					count++;
+				}
+			}
+			return @<span>@count</span>
+		;
+		}
+
+		//	6. Partendo dalla data di oggi (usando la classe DateTime) stampare in pagina
+		//a. la data di 7 giorni fa
+		//b. che giorno della settimana Ã¨ oggi (il risultato dovrÃ  essere il nome del giorno (LunedÃ¬, MartedÃ¬, ...)
+		//c. che giorno della settimana sarÃ  nello stesso giorno e mese di oggi ma tra un anno (il risultato dovrÃ  essere il nome del giorno (LunedÃ¬, MartedÃ¬, ...)
+		public IHtmlContent MyDates()
+		{
+		DateTime Today =  DateTime.Now;
+        DateTime OneYearForward = new DateTime(Today.Year + 1, Today.Month, Today.Day);
+        DateTime SevenDaysAgo = Today.AddDays(-7);
+
+        return Html.Raw($@"
+            <ul>
+                <li>
+                   7 giorni fa: {SevenDaysAgo}
+                </li>
+                <li>
+                    Data odierna: {DateTime.Today.DayOfWeek}    
+                </li>
+                <li>
+                    Data tra un anno: {OneYearForward.DayOfWeek}   
+                </li>
+            </ul>
+        ");
+		}
 	}
 
 	//4. Creare una List<int> di 20 numeri interi (generati random da 1 a 90, 1 e 90 inclusi) e mostrare in pagina solo i numeri compresi tra 20 e 70
@@ -103,7 +128,7 @@
 	<div class="container">
 		<main role="main" class="pb-3">
 				<h1 class="mb-5 text-center">La pizzeria di @firstname @lastname</h1>
-				<h4>Snacks</h4>
+				<h2>Snacks</h2>
 				<h4>La somma dei numeri fino a 50 è: @NumbersSum(50)</h4>
 				<h4>La frase contiene @SentenceCount("nel mezzo del cammin di nostra vita mi ritrovai per una valle oscura")(null) "a" al suo interno.</h4>
 				<div>
@@ -116,11 +141,10 @@
 				}
 				</div>
 	@*5. Stampare in pagina la data e l'ora attuale (usando la classe DateTime) con il formato anno-mese-giorno ore:minuti:secondi*@
-
 				<div>
-					<h4>
-					@DateTime.Now.ToShortDateString() @DateTime.Now.ToShortTimeString()
-					</h4>
+					<h4>La data di oggi è: <span>@DateTime.Now.ToShortDateString() @DateTime.Now.ToShortTimeString()</span></h4>
+					<h4>Giochi di date:</h4>
+					@MyDates()
 				</div>
 				<h2 class="my-4">Le pizze</h2>
 				<table class="table">
